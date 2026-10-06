@@ -112,7 +112,16 @@ def mock_model_step(messages):
         return f"根据查询结果：{json.dumps(last_tool, ensure_ascii=False)}。"
 
     # ② 没有工具结果 → 判断这轮要不要调工具
+      # ② 没有工具结果 → 判断这轮要不要调工具
     if "天气" in last_user:
+        # 从问题里提取城市名（在"天气"前面的词）——模拟真实模型解析参数
+        city = "济南"
+        for c in ["北京", "上海", "广州", "深圳", "成都"]:
+            if c in last_user:
+                city = c
+                break
+        return [{"type": "function", "function": {"name": "get_weather", "arguments": {"city": city}}}]
+
         return [{"type": "function", "function": {"name": "get_weather", "arguments": {"city": "济南"}}}]
     if "时间" in last_user or "几点" in last_user:
         return [{"type": "function", "function": {"name": "get_current_time", "arguments": {}}}]
@@ -165,7 +174,7 @@ if __name__ == "__main__":
     print("=" * 60)
     print("Function Calling 深度实践（MOCK 模式，无需 API key）")
     print("=" * 60)
-    for text in ["今天济南天气怎么样？", "现在几点了？", "帮我算一下 (2+3)*4-1", "你好，简单介绍一下你自己"]:
+    for text in ["今天北京天气怎么样？", "现在几点了？", "帮我算一下 100/7", "你好，简单介绍一下你自己"]:
         run_conversation(text)
 
     print("-" * 60)

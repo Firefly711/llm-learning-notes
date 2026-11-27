@@ -7,7 +7,7 @@ Day 1 · FastAPI 入门：路由 + Pydantic
 打开文档：  http://127.0.0.1:8000/docs   （FastAPI 自动生成的 Swagger 交互文档）
 """
 from datetime import date
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -24,7 +24,7 @@ app = FastAPI(
 # ---------------------------------------------------------------------------
 class ChatMessage(BaseModel):
     """单条对话消息。字段类型 + 约束 = 自动校验规则。"""
-    role: str = Field(..., description="system / user / assistant / tool")
+    role: Literal["system", "user", "assistant", "tool"] = Field(..., description="消息角色")
     content: str = Field(..., min_length=1, max_length=4096)
 
 

@@ -112,7 +112,6 @@ def mock_model_step(messages):
         return f"根据查询结果：{json.dumps(last_tool, ensure_ascii=False)}。"
 
     # ② 没有工具结果 → 判断这轮要不要调工具
-      # ② 没有工具结果 → 判断这轮要不要调工具
     if "天气" in last_user:
         # 从问题里提取城市名（在"天气"前面的词）——模拟真实模型解析参数
         city = "济南"
@@ -121,8 +120,6 @@ def mock_model_step(messages):
                 city = c
                 break
         return [{"type": "function", "function": {"name": "get_weather", "arguments": {"city": city}}}]
-
-        return [{"type": "function", "function": {"name": "get_weather", "arguments": {"city": "济南"}}}]
     if "时间" in last_user or "几点" in last_user:
         return [{"type": "function", "function": {"name": "get_current_time", "arguments": {}}}]
     if any(c in last_user for c in "+-*/"):
